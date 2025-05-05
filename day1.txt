@@ -15,3 +15,9 @@ if b > a:
     print('statement is true')
 else:
     print('statement is false')
+
+# print all the values togather
+myName='Amarjeet Singh'
+city='Pune'
+pin=12345
+print(f"My Name is {myName}, my City is {city} and PinCode is {pin}")
