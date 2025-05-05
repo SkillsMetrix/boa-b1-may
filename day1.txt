@@ -1,23 +1,24 @@
-# variable declarations demo
 
-userName='Admin'
-print(userName)
-userName='Manager'
+#declare empty array
+use_numbers=[]
 
-userName=30
-print(userName)
+# ask the user to add the values
 
-# if conditions, dont use cruly braces ,insted use :
+data= int(input(' how many numbers you wana add ?'))
 
-a=10
-b=20
-if b > a:
-    print('statement is true')
-else:
-    print('statement is false')
+# store the values
 
-# print all the values togather
-myName='Amarjeet Singh'
-city='Pune'
-pin=12345
-print(f"My Name is {myName}, my City is {city} and PinCode is {pin}")
+for i in range(data):
+    num=int(input(f"Enter numbers{i+1}"))
+    use_numbers.append(num)
+    print(use_numbers)
+
+# print even and odd numbers
+
+for findValue in use_numbers:
+    if(findValue%2==0):
+        print(f"{findValue} is even")
+    else:
+         print(f"{findValue} is odd")
+
+
