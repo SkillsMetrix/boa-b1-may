@@ -11,8 +11,13 @@ class UserApp:
         self.email=email
         self.city=city
 
+    def printValues(self):
+        print(f"{self.name}** {self.email} ** {self.city}")
+        
     def __str__(self):
         return f"{self.name}** {self.email} ** {self.city}"
 
-user= UserApp()
-print(user)
+userone= UserApp()
+usertwo= UserApp('manager','man@mail.com')
+print(userone)
+print(usertwo)
