@@ -1,24 +1,18 @@
 
-#declare empty array
-use_numbers=[]
+class UserApp:
+    name=''
+    email=''
+    city=''
 
-# ask the user to add the values
+# constructor
 
-data= int(input(' how many numbers you wana add ?'))
+    def __init__(self,name='admin',email='admin@amil.com',city='pune'):
+        self.name=name
+        self.email=email
+        self.city=city
 
-# store the values
+    def __str__(self):
+        return f"{self.name}** {self.email} ** {self.city}"
 
-for i in range(data):
-    num=int(input(f"Enter numbers{i+1}"))
-    use_numbers.append(num)
-    print(use_numbers)
-
-# print even and odd numbers
-
-for findValue in use_numbers:
-    if(findValue%2==0):
-        print(f"{findValue} is even")
-    else:
-         print(f"{findValue} is odd")
-
-
+user= UserApp()
+print(user)
