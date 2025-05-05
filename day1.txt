@@ -1,4 +1,17 @@
- 
-sudo apt install python3.10-venv
-python3 -m venv .venv
-source .venv/bin/activate
+# variable declarations demo
+
+userName='Admin'
+print(userName)
+userName='Manager'
+
+userName=30
+print(userName)
+
+# if conditions, dont use cruly braces ,insted use :
+
+a=10
+b=20
+if b > a:
+    print('statement is true')
+else:
+    print('statement is false')
