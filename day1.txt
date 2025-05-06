@@ -1,4 +1,11 @@
 
+from pydantic import BaseModel
+
+class UserPost(BaseModel):
+    title:str
+    content:str
+
+--------
 from fastapi import Body,FastAPI,HTTPException,status
 from random import randrange
 from schemas import UserPost
