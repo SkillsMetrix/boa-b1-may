@@ -1,11 +1,34 @@
 
-from fastapi import FastAPI
-
+from fastapi import Body,FastAPI
+from random import randrange
+from schemas import UserPost
 app= FastAPI()
 
-@app.get("/welcome")
-def welcome():
-    return {"message":"welcome to FastAPI"}
-@app.get("/login")
-def login():
-    return {"message":"welcome to Login page"}
+user_post=[]
+
+@app.get("/loadall")
+def loadData():
+    return {"message":user_post}
+
+@app.post("/createpost")
+def createPost(newPost:UserPost):
+    data=newPost.model_dump()
+    data['id']=randrange(0,10000)
+    user_post.append(data)
+
+    return {"message":data}
+
+# reusable func
+def findPost(id):
+    for i,p in enumerate(user_post):
+        if p['id'] == id:
+            print(p)
+            return p
+
+@app.get("/loadpost/{id}")
+def findPostById(id:int):
+    findData=findPost(id)
+    print(findData)
+    return {"data": findData}
+
+
