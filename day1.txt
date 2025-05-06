@@ -1,1 +1,11 @@
-https://survey.zohopublic.com/zs/u7a6eq
+
+from fastapi import FastAPI
+
+app= FastAPI()
+
+@app.get("/welcome")
+def welcome():
+    return {"message":"welcome to FastAPI"}
+@app.get("/login")
+def login():
+    return {"message":"welcome to Login page"}
