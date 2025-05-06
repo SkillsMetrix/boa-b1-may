@@ -1,5 +1,5 @@
 
-from fastapi import Body,FastAPI
+from fastapi import Body,FastAPI,HTTPException,status
 from random import randrange
 from schemas import UserPost
 app= FastAPI()
@@ -23,12 +23,33 @@ def findPost(id):
     for i,p in enumerate(user_post):
         if p['id'] == id:
             print(p)
-            return p
+            return i
 
 @app.get("/loadpost/{id}")
 def findPostById(id:int):
     findData=findPost(id)
+    if findData ==None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User not Found")
     print(findData)
     return {"data": findData}
 
 
+@app.delete("/deletepost/{id}")
+def deletePostById(id:int):
+    findData=findPost(id)
+    if findData ==None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User not Found")
+    user_post.pop(findData)
+    return {"data": "user deleted"}
+
+
+@app.put("/updatepost/{id}")
+def deletePostById(id:int,post:UserPost):
+    findData=findPost(id)
+    if findData ==None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User not Found")
+    data=post.model_dump()
+    data['id']=id
+    user_post[findData]=post
+    
+    return {"data": "user updated"}
