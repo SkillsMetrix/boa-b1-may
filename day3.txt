@@ -1,1 +1,8 @@
- ssh-copy-id -f "-o IdentityFile boa-key.pem" ubuntu@44.227.130.120
+
+- hosts: web
+  become: true
+  tasks:
+    - name: create a directory on remote machine
+      file:
+        path: ./boa-training
+        state: directory
