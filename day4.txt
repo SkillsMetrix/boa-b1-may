@@ -1,31 +1,48 @@
-- hosts: db
+- hosts: web
   become: true
   gather_facts: False
-  roles:
-    - demo-handler
+
+  vars:
+    # string var
+    username_firstname: 'Amit Kumar'
+    #boolean
+    is_enabled: true
+    #list
+    fruits:
+      - apple
+      - mango
+      - banana
+    #dict
+    fruits_price:
+      apple: 30
+      mango: 40
+      banana: 20
+    #nested
+    fruits_basket:
+      - name: john
+        fruits:
+          - mango
+          - apple
+      - name: annie
+        fruits:
+          - banana
+          - mango
   
-  handlers:
-    - name: restart nginx
-      service:
-        name: nginx
-        state: restarted
+  tasks:
+    - name: print String value
+      debug:
+        var: username_firstname
+    - name: print boolean value
+      debug:
+        var: is_enabled
+    - name: print list value
+      debug:
+        var: fruits
+    - name: print dict value
+      debug:
+        var: fruits_price
 
-
-
-------
-
-
-- name: install nginx
-  apt:
-    name: nginx
-    state: latest
-    update_cache: yes
-
-- name: copy file
-  template: src=files/index.html dest=/usr/share/nginx/html/index.html
-
-
-- name: update file
-  template: src=files/update.html dest=/usr/share/nginx/html/index.html
-  notify: 
-    - restart nginx
+    - name: print positional value
+      debug:
+        var: fruits[1]
+  
