@@ -11,3 +11,13 @@
   when:
     - ansible_facts['os_family'] == 'Debian'
     - ansible_facts['distribution_major_version']>='20'
+
+- name: Register the var
+  command: cat /home/ubuntu/boa-userEnabled.txt
+  register: data_content
+
+- name: read the value and take a call
+  debug:
+    var: data_content.stdout
+  when: data_content.stdout.find('amarjeet')!= -1
+
