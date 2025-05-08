@@ -1,48 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sample Index Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 1em;
-            text-align: center;
-        }
-        main {
-            padding: 1em;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1em;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>I am learning Ansible with SkillsMetrix</h1>
-    </header>
-    <main>
-        <h2>Ansible Expert session  </h2>
-        <p> This is my First Ansible Playbook, Where I learnt how to deploy a static app on ec2 instance using Ansible. </p>
-        <p>For more information, visit https://www.youtube.com/@skillsmetrixtech</p>
-    </main>
-    <footer>
-        <p>&copy; 2024 SkillsMetrix</p>
-    </footer>
-</body>
-</html>
+
+- hosts: web
+  become: true
+  gather_facts: False
+  tasks:
+    - name:  update apt cache
+      apt:
+        update_cache: yes
+
+    - name: install py3,pip and virtual env
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+        state: present
+    - name: create FastAPI application directory
+      file:
+        path: /opt/fastapi_app
+        state: directory
+        mode: '0755'
+    
+    - name: Copy Fast API app
+      copy:
+        src: fastapi_app/
+        dest: /opt/fastapi_app
+        mode: '0644'
+
+    - name: create virtual env
+      command: python3 -m venv /opt/fastapi_app/venv
+      args:
+        creates: /opt/fastapi_app/venv
+
+    - name: Install FastAPI and uvicorn in venv
+      command: /opt/fastapi_app/venv/bin/pip install fastapi uvicorn
+
+    - name: Run FastAPI all using Uvicorn
+      shell: |
+        nohup /opt/fastapi_app/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000 &
+      args:
+        chdir: /opt/fastapi_app
+    
+
+      
