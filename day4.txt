@@ -1,3 +1,19 @@
+- hosts: db
+  become: true
+  gather_facts: False
+  roles:
+    - demo-handler
+  
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+
+
+
+------
+
 
 - name: install nginx
   apt:
@@ -11,3 +27,5 @@
 
 - name: update file
   template: src=files/update.html dest=/usr/share/nginx/html/index.html
+  notify: 
+    - restart nginx
