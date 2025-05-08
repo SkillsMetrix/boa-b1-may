@@ -1,48 +1,13 @@
-- hosts: web
-  become: true
-  gather_facts: False
 
-  vars:
-    # string var
-    username_firstname: 'Amit Kumar'
-    #boolean
-    is_enabled: true
-    #list
-    fruits:
-      - apple
-      - mango
-      - banana
-    #dict
-    fruits_price:
-      apple: 30
-      mango: 40
-      banana: 20
-    #nested
-    fruits_basket:
-      - name: john
-        fruits:
-          - mango
-          - apple
-      - name: annie
-        fruits:
-          - banana
-          - mango
-  
-  tasks:
-    - name: print String value
-      debug:
-        var: username_firstname
-    - name: print boolean value
-      debug:
-        var: is_enabled
-    - name: print list value
-      debug:
-        var: fruits
-    - name: print dict value
-      debug:
-        var: fruits_price
+- name: uninstall apache server
+  apt:
+    name: apache2
+    state: absent
+  when: install_apache_flag
 
-    - name: print positional value
-      debug:
-        var: fruits[1]
-  
+- name: check the OS version
+  debug:
+    var: ansible_facts['kernel_version']
+  when:
+    - ansible_facts['os_family'] == 'Debian'
+    - ansible_facts['distribution_major_version']>='20'
