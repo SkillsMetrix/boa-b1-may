@@ -1,28 +1,31 @@
----
-- name: Remove port 80 from Apache2 (Ubuntu)
-  hosts: webservers
-  become: yes
+- name: install and configure nginx
+  hosts: db
+  become: true
   vars:
-    apache_port_to_keep: 8081  # Define the port you want to keep
-
+    nginx_port: 8080
+  
   tasks:
-    - name: Ensure only custom port is in ports.conf
-      ansible.builtin.lineinfile:
-        path: /etc/apache2/ports.conf
-        regexp: '^Listen '
-        line: "Listen {{ apache_port_to_keep }}"
-        backup: yes
+    - name: install nginx
+      apt:
+        name: nginx
         state: present
-        create: yes
+        update_cache: yes
+    - name: configure nginx to listen to custom nginx_port
+      lineinfile:
+        path: /etc/nginx/sites-available/default
+        regexp: "listen 80 default server"
+        line: "listen {{nginx_port}} default server"
+        backup: yes
+      notify: Restart Nginx
+    
+    - name: Allow traffic on new nginx port
+      ufw:
+        rule: allow
+        port: "{{nginx_port}}"
+        proto: tcp
 
-    - name: Remove VirtualHost on port 80 from 000-default.conf
-      ansible.builtin.replace:
-        path: /etc/apache2/sites-available/000-default.conf
-        regexp: '(<VirtualHost\s+\*:)(80)'
-        replace: '\1{{ apache_port_to_keep }}'
-
-    - name: Restart Apache2
-      ansible.builtin.service:
-        name: apache2
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
         state: restarted
-        enabled: yes
